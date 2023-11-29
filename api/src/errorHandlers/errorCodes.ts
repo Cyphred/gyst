@@ -35,6 +35,11 @@ export class ErrorCode {
     "Username is already in use",
     409
   );
+  static readonly INVALID_CREDENTIALS = new ErrorCode(
+    "GYST0008",
+    "Invalid username/password",
+    401
+  );
 
   //to add, just increment the error code
 
