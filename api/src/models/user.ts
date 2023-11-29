@@ -33,6 +33,7 @@ const UserSchema: Schema<UserDocument, UserModelInterface> = new Schema<
     password: {
       type: String,
       required: true,
+      select: false,
     },
     name: {
       type: {
