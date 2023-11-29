@@ -16,8 +16,12 @@ import {
   deleteExpenseTracker,
   updateExpenseTracker,
 } from "../controllers/trackerController.js";
+import { createAccount, login } from "../controllers/userController.js";
 
 const router = Router();
+
+router.post("/signup", createAccount);
+router.post("/login", login);
 
 // Routes beyond this line require the user to be logged in
 router.use(requireUser);
