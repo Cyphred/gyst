@@ -11,6 +11,11 @@ import {
   deleteExpenseCategory,
   updateExpenseCategory,
 } from "../controllers/categoryController.js";
+import {
+  createExpenseTracker,
+  deleteExpenseTracker,
+  updateExpenseTracker,
+} from "../controllers/trackerController.js";
 
 const router = Router();
 
@@ -24,6 +29,10 @@ router.delete("/expenses", deleteExpense);
 router.post("/expense-categories", createExpenseCategory);
 router.put("/expense-categories", updateExpenseCategory);
 router.delete("/expense-categories", deleteExpenseCategory);
+
+router.post("/expense-tracker", createExpenseTracker);
+router.put("/expense-tracker", updateExpenseTracker);
+router.delete("/expense-tracker", deleteExpenseTracker);
 
 // Do not put routes or any middleware after this one
 router.use(globalErrorHandler);
