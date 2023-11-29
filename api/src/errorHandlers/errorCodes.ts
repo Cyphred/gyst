@@ -30,6 +30,11 @@ export class ErrorCode {
     "Tracker not found",
     404
   );
+  static readonly USERNAME_IN_USE = new ErrorCode(
+    "GYST0007",
+    "Username is already in use",
+    409
+  );
 
   //to add, just increment the error code
 
