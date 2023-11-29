@@ -20,6 +20,16 @@ export class ErrorCode {
     "Category not found",
     404
   );
+  static readonly EXPENSE_NOT_FOUND = new ErrorCode(
+    "GYST0005",
+    "Expense not found",
+    404
+  );
+  static readonly TRACKER_NOT_FOUND = new ErrorCode(
+    "GYST0006",
+    "Tracker not found",
+    404
+  );
 
   //to add, just increment the error code
 
