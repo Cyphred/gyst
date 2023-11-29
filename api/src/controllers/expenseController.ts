@@ -126,6 +126,9 @@ export const updateExpense = async (
       { new: true }
     );
 
+    // Reject if the expense has no match
+    if (!expense) throw new ApiError(ErrorCode.EXPENSE_NOT_FOUND);
+
     return genericOkResponse(res, expense, "Expense updated");
   } catch (err) {
     next(err);
