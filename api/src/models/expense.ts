@@ -13,6 +13,7 @@ export interface Expense {
   notes?: string[];
   tags?: Types.ObjectId[];
   category: Types.ObjectId;
+  deleted: boolean;
 }
 
 export interface ExpenseDocument extends Expense, Document {}
@@ -46,6 +47,7 @@ const ExpenseSchema: Schema<ExpenseDocument> = new Schema<ExpenseDocument>(
       ref: "ExpenseCategory",
       required: true,
     },
+    deleted: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

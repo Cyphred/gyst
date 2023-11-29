@@ -10,6 +10,7 @@ export default async (trackerId: string, userId: string) => {
   const tracker = await ExpenseTrackerModel.findOne({
     _id: trackerId,
     user: userId,
+    deleted: false,
   });
 
   if (!tracker) return false;

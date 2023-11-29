@@ -4,6 +4,7 @@ export interface ExpenseTracker {
   user: Types.ObjectId;
   name: string;
   description?: string;
+  deleted: boolean;
 }
 
 export interface ExpenseTrackerDocument extends ExpenseTracker, Document {}
@@ -20,6 +21,7 @@ const ExpenseTrackerSchema: Schema<ExpenseTrackerDocument> =
         type: String,
         required: true,
       },
+      deleted: { type: Boolean, default: false },
       description: String,
     },
     { timestamps: true }

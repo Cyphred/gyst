@@ -82,7 +82,10 @@ export const updateExpense = async (
     const expenseId = req.query.expenseId as string;
 
     // Fetch existing expense data
-    const existingExpense = await ExpenseModel.findOne({ _id: expenseId });
+    const existingExpense = await ExpenseModel.findOne({
+      _id: expenseId,
+      deleted: false,
+    });
 
     // Reject if the expense does not exist
     if (!existingExpense) throw new ApiError(ErrorCode.EXPENSE_NOT_FOUND);
@@ -111,7 +114,7 @@ export const updateExpense = async (
 
     // Update the expense data
     const expense = await ExpenseModel.findOneAndUpdate(
-      { _id: existingExpense._id },
+      { _id: existingExpense._id, deleted: false },
       {
         date,
         amount,

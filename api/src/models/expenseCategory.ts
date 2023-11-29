@@ -4,6 +4,7 @@ export interface ExpenseCategory {
   tracker: Types.ObjectId;
   descriptiveId: string;
   description: string;
+  deleted: boolean;
 }
 
 export interface ExpenseCategoryDocument extends ExpenseCategory, Document {}
@@ -27,6 +28,7 @@ const ExpenseCategorySchema: Schema<ExpenseCategoryDocument> =
       required: true,
       unique: true,
     },
+    deleted: { type: Boolean, default: false },
   });
 
 const ExpenseCategoryModel: Model<ExpenseCategoryDocument> =

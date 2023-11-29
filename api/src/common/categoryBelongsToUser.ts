@@ -8,12 +8,16 @@ import ExpenseTrackerModel from "../models/expenseTracker.js";
  * @returns `true` if the tracker and category belongs to the user. `false` if not.
  */
 export default async (categoryId: string, userId: string) => {
-  const category = await ExpenseCategoryModel.findOne({ _id: categoryId });
+  const category = await ExpenseCategoryModel.findOne({
+    _id: categoryId,
+    deleted: false,
+  });
   if (!category) return false;
 
   const tracker = await ExpenseTrackerModel.findOne({
     _id: category.tracker,
     user: userId,
+    deleted: false,
   });
   if (!tracker) return false;
 
