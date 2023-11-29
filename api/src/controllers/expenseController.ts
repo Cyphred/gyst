@@ -1,29 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import ExpenseModel from "../models/expense.js";
 import genericOkResponse from "../common/genericOkResponse.js";
-import ExpenseCategoryModel from "../models/expenseCategory.js";
-import ExpenseTrackerModel from "../models/expenseTracker.js";
 import ApiError from "../errorHandlers/apiError.js";
 import { ErrorCode } from "../errorHandlers/errorCodes.js";
-
-/**
- * Checks if a category is under a tracker that belongs to the user.
- * @param categoryId The `_id` of the expense category
- * @param userId The `_id` of the user making the request
- * @returns `true` if the tracker and category belongs to the user. `false` if not.
- */
-const categoryBelongsToUser = async (categoryId: string, userId: string) => {
-  const category = await ExpenseCategoryModel.findOne({ _id: categoryId });
-  if (!category) return false;
-
-  const tracker = await ExpenseTrackerModel.findOne({
-    _id: category.tracker,
-    user: userId,
-  });
-  if (!tracker) return false;
-
-  return true;
-};
+import categoryBelongsToUser from "../common/categoryBelongsToUser.js";
 
 /**
  * Creates an expense document
