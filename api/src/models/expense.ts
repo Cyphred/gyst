@@ -11,7 +11,7 @@ export interface Expense {
   amount: number;
   description: string;
   notes?: string[];
-  tags?: Types.ObjectId[];
+  tags?: string[];
   category: Types.ObjectId;
   deleted: boolean;
 }
@@ -39,8 +39,7 @@ const ExpenseSchema: Schema<ExpenseDocument> = new Schema<ExpenseDocument>(
       type: [String],
     },
     tags: {
-      type: [Schema.Types.ObjectId],
-      ref: "ExpenseTag",
+      type: [String],
     },
     category: {
       type: Schema.Types.ObjectId,
