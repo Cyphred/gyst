@@ -1,7 +1,10 @@
 import { Router } from "express";
 import requireUser from "../middleware/requireUser.js";
 import globalErrorHandler from "../errorHandlers/globalErrorHandler.js";
-import { createExpense } from "../controllers/expenseController.js";
+import {
+  createExpense,
+  updateExpense,
+} from "../controllers/expenseController.js";
 
 const router = Router();
 
@@ -9,6 +12,7 @@ const router = Router();
 router.use(requireUser);
 
 router.post("/expenses", createExpense);
+router.put("/expenses", updateExpense);
 
 // Do not put routes or any middleware after this one
 router.use(globalErrorHandler);
