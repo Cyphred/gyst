@@ -11,8 +11,16 @@ dotenv.config();
 let port = parseInt(process.env.PORT);
 if (!port || isNaN(port)) port = 8000;
 
+// Store required .env variables
+const requiredEnvVariables = [process.env.JWT_SECRET, process.env.MONGO_URI];
+
+// Stop the program if a required variable was not set
+for (const envVar of requiredEnvVariables) {
+  if (envVar === undefined)
+    throw new Error("A required value in the .env is not set");
+}
+
 // Attempt to connect to MongoDB server
-// Stop the program if unable to
 try {
   console.log(
     `Attempting to connect to MongoDB at ${process.env.MONGO_URI}...`
@@ -20,10 +28,9 @@ try {
   await mongoose.connect(process.env.MONGO_URI);
 } catch (err) {
   console.error(err);
-  console.error(
+  throw new Error(
     `Could not connect to MongoDB server at ${process.env.MONGO_URI}`
   );
-  process.exit(1);
 }
 
 // Create express app
