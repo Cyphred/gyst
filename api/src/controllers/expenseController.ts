@@ -134,3 +134,49 @@ export const updateExpense = async (
     next(err);
   }
 };
+
+/**
+ * Deletes an expense document
+ */
+export const deleteExpense = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const expenseId = req.query.expenseId as string;
+
+    // Fetch existing expense data
+    const existingExpense = await ExpenseModel.findOne({
+      _id: expenseId,
+      deleted: false,
+    });
+
+    // Reject if the expense does not exist
+    if (!existingExpense) throw new ApiError(ErrorCode.EXPENSE_NOT_FOUND);
+
+    // Determine if the existing expense belongs to the requestor
+    const existingExpenseBelongsToRequestor = await categoryBelongsToUser(
+      existingExpense.category.toString(),
+      req.user._id.toString()
+    );
+
+    // Reject if the expense exists but does not belong to the requestor
+    if (!existingExpenseBelongsToRequestor)
+      throw new ApiError(ErrorCode.EXPENSE_NOT_FOUND);
+
+    // Update the expense data
+    const expense = await ExpenseModel.findOneAndUpdate(
+      { _id: existingExpense._id, deleted: false },
+      { deleted: true },
+      { new: true }
+    );
+
+    // Reject if the expense has no match
+    if (!expense) throw new ApiError(ErrorCode.EXPENSE_NOT_FOUND);
+
+    return genericOkResponse(res, undefined, "Expense deleted");
+  } catch (err) {
+    next(err);
+  }
+};

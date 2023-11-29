@@ -3,6 +3,7 @@ import requireUser from "../middleware/requireUser.js";
 import globalErrorHandler from "../errorHandlers/globalErrorHandler.js";
 import {
   createExpense,
+  deleteExpense,
   updateExpense,
 } from "../controllers/expenseController.js";
 import {
@@ -18,6 +19,7 @@ router.use(requireUser);
 
 router.post("/expenses", createExpense);
 router.put("/expenses", updateExpense);
+router.delete("/expenses", deleteExpense);
 
 router.post("/expense-categories", createExpenseCategory);
 router.put("/expense-categories", updateExpenseCategory);
