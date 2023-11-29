@@ -6,6 +6,28 @@ import ExpenseTrackerModel from "../models/expenseTracker.js";
 import ApiError from "../errorHandlers/apiError.js";
 import { ErrorCode } from "../errorHandlers/errorCodes.js";
 
+/**
+ * Checks if a category is under a tracker that belongs to the user.
+ * @param categoryId The `_id` of the expense category
+ * @param userId The `_id` of the user making the request
+ * @returns `true` if the tracker and category belongs to the user. `false` if not.
+ */
+const categoryBelongsToUser = async (categoryId: string, userId: string) => {
+  const category = await ExpenseCategoryModel.findOne({ _id: categoryId });
+  if (!category) return false;
+
+  const tracker = await ExpenseTrackerModel.findOne({
+    _id: category.tracker,
+    user: userId,
+  });
+  if (!tracker) return false;
+
+  return true;
+};
+
+/**
+ * Creates an expense document
+ */
 export const createExpense = async (
   req: Request,
   res: Response,
@@ -28,14 +50,14 @@ export const createExpense = async (
       categoryId: string;
     } = req.body;
 
-    const category = await ExpenseCategoryModel.findOne({ _id: categoryId });
-    const tracker = await ExpenseTrackerModel.findOne({
-      _id: category.tracker,
-    });
+    // Check if the category belongs to the user
+    const belongs = await categoryBelongsToUser(
+      categoryId,
+      req.user._id.toString()
+    );
 
-    // Reject if the category and tracker does not belong to the user
-    if (tracker.user.toString() !== req.user._id.toString())
-      throw new ApiError(ErrorCode.CATEGORY_NOT_FOUND);
+    // Reject if the category does not belong to the user
+    if (!belongs) throw new ApiError(ErrorCode.CATEGORY_NOT_FOUND);
 
     const expense = await ExpenseModel.create({
       date,
@@ -43,10 +65,10 @@ export const createExpense = async (
       description,
       notes,
       tags,
-      category,
+      category: categoryId,
     });
 
-    return genericOkResponse(res, expense);
+    return genericOkResponse(res, expense, "Expense updated");
   } catch (err) {
     next(err);
   }
