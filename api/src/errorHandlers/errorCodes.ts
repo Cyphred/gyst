@@ -4,10 +4,15 @@ export class ErrorCode {
     "Something went wrong",
     500
   );
-  static readonly UNAUTHORIZED = new ErrorCode("GYST0001", "Unauthorized", 403);
+  static readonly UNAUTHORIZED = new ErrorCode("GYST0001", "Unauthorized", 401);
   static readonly MISSING_AUTHENTICATION = new ErrorCode(
     "GYST0002",
     "Missing authentication",
+    401
+  );
+  static readonly INVALID_TOKEN = new ErrorCode(
+    "GYST0003",
+    "Invalid token",
     401
   );
 
