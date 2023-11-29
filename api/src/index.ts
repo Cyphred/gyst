@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import rootRouter from "./routes/routes.js";
 
 // Load .env data
 dotenv.config();
@@ -57,7 +58,7 @@ app.use(
 );
 
 // Load in root router
-// app.use("/api", rootRouter);
+app.use("/api", rootRouter);
 
 // Start listening for requests
 app.listen(process.env.PORT, () => {
