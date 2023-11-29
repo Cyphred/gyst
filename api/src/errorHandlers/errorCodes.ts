@@ -15,6 +15,11 @@ export class ErrorCode {
     "Invalid token",
     401
   );
+  static readonly CATEGORY_NOT_FOUND = new ErrorCode(
+    "GYST0004",
+    "Category not found",
+    404
+  );
 
   //to add, just increment the error code
 
