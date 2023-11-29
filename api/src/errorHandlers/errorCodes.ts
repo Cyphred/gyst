@@ -40,6 +40,11 @@ export class ErrorCode {
     "Invalid username/password",
     401
   );
+  static readonly TAG_NOT_FOUND = new ErrorCode(
+    "GYST0009",
+    "Tag not found",
+    404
+  );
 
   //to add, just increment the error code
 

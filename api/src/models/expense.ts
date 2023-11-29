@@ -1,4 +1,7 @@
 import mongoose, { Schema, Types, Document, Model } from "mongoose";
+import ExpenseTagModel from "./expenseTag.js";
+import ApiError from "../errorHandlers/apiError.js";
+import { ErrorCode } from "../errorHandlers/errorCodes.js";
 
 export interface Expense {
   /**
@@ -50,6 +53,18 @@ const ExpenseSchema: Schema<ExpenseDocument> = new Schema<ExpenseDocument>(
   },
   { timestamps: true }
 );
+
+ExpenseSchema.pre<ExpenseDocument>("validate", async function (next) {
+  const tags = await ExpenseTagModel.find({
+    descriptiveId: { $in: this.tags },
+  });
+
+  // Reject if there are tags that were not found
+  if (this.tags.length !== tags.length)
+    next(new ApiError(ErrorCode.TAG_NOT_FOUND));
+
+  next();
+});
 
 const ExpenseModel: Model<ExpenseDocument> = mongoose.model<ExpenseDocument>(
   "Expense",
